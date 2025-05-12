@@ -1,29 +1,1003 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAANA TURIST</title>
+    <title>Caana Turist - Descubre Argentina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(56, 61, 109, 0.5), rgba(65, 59, 59, 0.5)), url('https://images.unsplash.com/photo-1516026672322-bc52d61a3d9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <audio src="PS.ogg" autoplay loop></audio>
-        <div class="container">
-            <h1>Ropa a la Moda</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="novedades.html">Novedades</a></li>
-                    <li><a href="Verano.html">Verano</a></li>
-                    <li><a href="Niño.html">NIños</a></li>
-                    <li><a href="Mujer.html">Mujer</a></li>
-                    <li><a href="Juventud.html">Juventud</a></li>
-                    <li><a href="Hombre.html">Hombre</a></li>
-                    <li><a href="Elegante.html">Elegante</a></li>
-                    
-                </ul>
-            </nav>
+
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-mountain text-2xl text-blue-300"></i>
+                <h1 class="text-2xl font-bold">Caana Turist</h1>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex items-center bg-blue-800 rounded-full px-4 py-2 w-1/3">
+                <input type="text" placeholder="Buscar destinos..."
+                    class="bg-transparent border-none outline-none w-full text-white placeholder-blue-300">
+                <button class="text-blue-300 hover:text-white" id="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- User Menu -->
+            <div class="flex items-center space-x-4">
+                <button class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-full transition-all" id="loginButton">
+                    <i class="fas fa-user mr-2"></i>Login
+                </button>
+                <button class="md:hidden text-xl" id="mobileMenuButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
+
+        <!-- Mobile Search -->
+        <div class="md:hidden bg-blue-800 px-4 py-2 hidden" id="mobileSearch">
+            <div class="flex items-center bg-blue-700 rounded-full px-4 py-2">
+                <input type="text" placeholder="Buscar destinos..."
+                    class="bg-transparent border-none outline-none w-full text-white placeholder-blue-300">
+                <button class="text-blue-300 hover:text-white" id="mobileSearchButton">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="bg-blue-800">
+            <div class="container mx-auto px-4">
+                <ul class="flex space-x-6 py-3 overflow-x-auto">
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="hero">Inicio</a></li>
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="destinations">Destinos</a></li>
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="attractions">Atracciones</a></li>
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="provinces">Provincias</a></li>
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="cities">Ciudades</a></li>
+                    <li><a href="#" class="text-white hover:text-blue-300 font-medium transition-all nav-link"
+                            data-section="contact">Contacto</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20" id="hero">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Descubre Argentina</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Explora las maravillas naturales y culturales de las
+                provincias más fascinantes del país.</p>
+            <button class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full transition-all"
+                id="exploreButton">
+                Explorar Destinos
+            </button>
+        </div>
+    </section>
+
+    <!-- Featured Provinces -->
+    <section class="py-16 bg-gray-50" id="provinces">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Provincias Destacadas</h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Province 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqD88YGTuJczfJVpa8fXSe8eMnE44fpHa0OQ&s"
+                        alt="Mendoza" class="w-full h-48 object-cover">
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-city text-blue-500 mr-2"></i>
+                            <span class="font-medium">Ciudades: Mendoza, San Rafael</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-mountain text-blue-500 mr-2"></i>
+                            <span class="font-medium">Atracción: Aconcagua</span>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-full transition-all view-more-btn"
+                        data-province="Mendoza">
+                        Ver más
+                    </button>
+                </div>
+            </div>
+
+            <!-- Province 2 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                <img src="https://cloudfront-us-east-1.images.arcpublishing.com/infobae/UHLMYDJTO5FR7ERAKVDRIQK5LA.jpg"
+                    alt="Buenos Aires" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Buenos Aires</h3>
+                    <p class="text-gray-600 mb-4">La capital cultural del país, llena de historia, tango y
+                        arquitectura europea.</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-city text-blue-500 mr-2"></i>
+                            <span class="font-medium">Ciudades: CABA, La Plata</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-landmark text-blue-500 mr-2"></i>
+                            <span class="font-medium">Atracción: Obelisco</span>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-full transition-all view-more-btn"
+                        data-province="Buenos Aires">
+                        Ver más
+                    </button>
+                </div>
+            </div>
+
+            <!-- Province 3 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                <img src="https://resizer.glanacion.com/resizer/v2/en-la-ciudad-de-salta-conviven-construcciones-7K23G3UHN5GDXFKAD2VRYARITQ.JPG?auth=2b8ffb95067139eab64c112d0ea3779be40cac279f530d6271ffcdfde2dcf94d&width=1280&height=854&quality=70&smart=true"
+                    alt="Salta" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-blue-900 mb-2">Salta</h3>
+                    <p class="text-gray-600 mb-4">Tierra de tradiciones, paisajes coloridos y la mejor empanada
+                        argentina.</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-city text-blue-500 mr-2"></i>
+                            <span class="font-medium">Ciudades: Salta, Cafayate</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-train text-blue-500 mr-2"></i>
+                            <span class="font-medium">Atracción: Tren a las Nubes</span>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-full transition-all view-more-btn"
+                        data-province="Salta">
+                        Ver más
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Popular Cities -->
+    <section class="py-16 bg-blue-900 text-white" id="cities">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Ciudades Populares</h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- City 1 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-wine-glass-alt text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Mendoza</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">Capital vitivinícola de Argentina, rodeada de viñedos y con
+                        impresionantes vistas a la Cordillera de los Andes.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-utensils mr-1"></i> Gastronomía</span>
+                        <span><i class="fas fa-hiking mr-1"></i> Aventura</span>
+                        <span><i class="fas fa-wine-bottle mr-1"></i> Vinos</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Mendoza">
+                        Ver detalles
+                    </button>
+                </div>
+
+                <!-- City 2 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-tango text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Buenos Aires</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">La ciudad que nunca duerme, con su mezcla de cultura europea y latina,
+                        famosa por el tango y su vida nocturna.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-landmark mr-1"></i> Cultura</span>
+                        <span><i class="fas fa-music mr-1"></i> Tango</span>
+                        <span><i class="fas fa-archway mr-1"></i> Arquitectura</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Buenos Aires">
+                        Ver detalles
+                    </button>
+                </div>
+
+                <!-- City 3 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-mountain text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Bariloche</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">Paraíso de la Patagonia con lagos cristalinos, montañas nevadas y el
+                        mejor chocolate artesanal.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-skiing mr-1"></i> Nieve</span>
+                        <span><i class="fas fa-tree mr-1"></i> Naturaleza</span>
+                        <span><i class="fas fa-candy-cane mr-1"></i> Chocolate</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Bariloche">
+                        Ver detalles
+                    </button>
+                </div>
+
+                <!-- City 4 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-umbrella-beach text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Mar del Plata</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">La perla del Atlántico, con sus extensas playas, vida nocturna y
+                        deliciosos pescados y mariscos.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-water mr-1"></i> Playa</span>
+                        <span><i class="fas fa-fish mr-1"></i> Mariscos</span>
+                        <span><i class="fas fa-cocktail mr-1"></i> Noche</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Mar del Plata">
+                        Ver detalles
+                    </button>
+                </div>
+
+                <!-- City 5 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-train text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Salta</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">La linda, con su arquitectura colonial, cerros colorados y la base del
+                        famoso Tren a las Nubes.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-history mr-1"></i> Historia</span>
+                        <span><i class="fas fa-route mr-1"></i> Rutas</span>
+                        <span><i class="fas fa-drumstick-bite mr-1"></i> Empanadas</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Salta">
+                        Ver detalles
+                    </button>
+                </div>
+
+                <!-- City 6 -->
+                <div class="bg-blue-800 rounded-lg p-6 transition-all hover:bg-blue-700 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-wine-bottle text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Cafayate</h3>
+                    </div>
+                    <p class="text-blue-200 mb-4">Corazón de los Valles Calchaquíes, famosa por sus viñedos de altura y
+                        paisajes rojizos impresionantes.</p>
+                    <div class="flex justify-between text-blue-300 text-sm">
+                        <span><i class="fas fa-wine-glass-alt mr-1"></i> Vino Torrontés</span>
+                        <span><i class="fas fa-camera mr-1"></i> Paisajes</span>
+                        <span><i class="fas fa-spa mr-1"></i> Relax</span>
+                    </div>
+                    <button
+                        class="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-all view-city-btn"
+                        data-city="Cafayate">
+                        Ver detalles
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attractions Section -->
+    <section class="py-16 bg-gray-50" id="attractions">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-blue-900">Atracciones Imperdibles</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Attraction 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="https://images.unsplash.com/photo-1582972236019-ea9dfa1a6ce9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                                alt="Obelisco" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 md:w-2/3">
+                            <h3 class="text-xl font-bold text-blue-900 mb-2">Obelisco de Buenos Aires</h3>
+                            <p class="text-gray-600 mb-4">Icono de la ciudad de Buenos Aires, ubicado en la intersección
+                                de las avenidas Corrientes y 9 de Julio.</p>
+                            <div class="flex items-center text-blue-600">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Buenos Aires, Argentina</span>
+                            </div>
+                            <button
+                                class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition-all view-attraction-btn"
+                                data-attraction="Obelisco">
+                                Más información
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attraction 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/b5/a8/02/aconcagua-32-largejpg.jpg?w=1200&h=1200&s=1"
+                                alt="Aconcagua" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 md:w-2/3">
+                            <h3 class="text-xl font-bold text-blue-900 mb-2">Cerro Aconcagua</h3>
+                            <p class="text-gray-600 mb-4">La montaña más alta de América, con 6,960 metros, ubicada en
+                                la provincia de Mendoza.</p>
+                            <div class="flex items-center text-blue-600">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Mendoza, Argentina</span>
+                            </div>
+                            <button
+                                class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition-all view-attraction-btn"
+                                data-attraction="Aconcagua">
+                                Más información
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attraction 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="https://blog.moebiusviajes.com/wp-content/uploads/2021/06/Tren-a-las-nubes.jpg"
+                                alt="Tren a las Nubes" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 md:w-2/3">
+                            <h3 class="text-xl font-bold text-blue-900 mb-2">Tren a las Nubes</h3>
+                            <p class="text-gray-600 mb-4">Famoso tren turístico que recorre la Cordillera de los Andes,
+                                llegando a más de 4,200 metros de altura.</p>
+                            <div class="flex items-center text-blue-600">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Salta, Argentina</span>
+                            </div>
+                            <button
+                                class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition-all view-attraction-btn"
+                                data-attraction="Tren a las Nubes">
+                                Más información
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attraction 4 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="md:flex">
+                        <div class="md:w-1/3">
+                            <img src="https://www.viajesyfotografia.com/wp-content/uploads/2024/02/perito-moreno-DSC09025.1024_result.webp"
+                                alt="Glaciar Perito Moreno" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 md:w-2/3">
+                            <h3 class="text-xl font-bold text-blue-900 mb-2">Glaciar Perito Moreno</h3>
+                            <p class="text-gray-600 mb-4">Uno de los pocos glaciares del mundo que sigue avanzando,
+                                ubicado en el Parque Nacional Los Glaciares.</p>
+                            <div class="flex items-center text-blue-600">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Santa Cruz, Argentina</span>
+                            </div>
+                            <button
+                                class="mt-4 bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition-all view-attraction-btn"
+                                data-attraction="Glaciar Perito Moreno">
+                                Más información
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-12 bg-blue-700 text-white" id="newsletter">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">¿Quieres recibir ofertas especiales?</h2>
+            <p class="mb-6 max-w-2xl mx-auto">Suscríbete a nuestro newsletter y recibe información sobre los mejores
+                destinos y promociones.</p>
+            <div class="flex flex-col md:flex-row justify-center max-w-lg mx-auto">
+                <input type="email" placeholder="Tu correo electrónico"
+                    class="px-4 py-3 rounded-l-full md:rounded-r-none rounded-r-full mb-2 md:mb-0 w-full text-gray-800"
+                    id="newsletterEmail">
+                <button
+                    class="bg-blue-900 hover:bg-blue-800 px-6 py-3 rounded-r-full md:rounded-l-none rounded-l-full transition-all"
+                    id="subscribeButton">
+                    Suscribirse
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12" id="contact">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- About -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-mountain text-blue-400 mr-2"></i> Caana Turist
+                    </h3>
+                    <p class="text-gray-400">Tu guía definitiva para explorar las maravillas de Argentina. Descubre
+                        paisajes increíbles, cultura vibrante y experiencias únicas.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all nav-link"
+                                data-section="hero">Inicio</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all nav-link"
+                                data-section="destinations">Destinos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all nav-link"
+                                data-section="attractions">Atracciones</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all nav-link"
+                                data-section="provinces">Provincias</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all nav-link"
+                                data-section="contact">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-blue-400 mr-2"></i>
+                            <span>11 2345 7689</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-blue-400 mr-2"></i>
+                            <span>info@caanaturist.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-instagram text-blue-400 mr-2"></i>
+                            <span>caana_turist</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-400 mr-2"></i>
+                            <span>Buenos Aires, Argentina</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Social -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Síguenos</h3>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="bg-gray-700 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#"
+                            class="bg-gray-700 hover:bg-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com/caana_turist"
+                            class="bg-gray-700 hover:bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="bg-gray-700 hover:bg-red-500 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+
+                    <h3 class="text-xl font-bold mt-6 mb-4">Descarga nuestra app</h3>
+                    <div class="flex space-x-2">
+                        <a href="#"
+                            class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded flex items-center transition-all">
+                            <i class="fab fa-google-play mr-2"></i>
+                            <div class="text-xs">
+                                <div>GET IT ON</div>
+                                <div class="font-bold">Google Play</div>
+                            </div>
+                        </a>
+                        <a href="#"
+                            class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded flex items-center transition-all">
+                            <i class="fab fa-apple mr-2"></i>
+                            <div class="text-xs">
+                                <div>Download on the</div>
+                                <div class="font-bold">App Store</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Caana Turist. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold" id="modalTitle">Detalles</h3>
+                <button class="text-gray-500 hover:text-gray-700" id="closeModal">&times;</button>
+            </div>
+            <div id="modalContent">
+                <p>Información detallada aparecerá aquí.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Iniciar Sesión</h3>
+                <button class="text-gray-500 hover:text-gray-700" id="closeLoginModal">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="username" class="block text-gray-700 mb-2">Usuario</label>
+                    <input type="text" id="username" class="w-full px-3 py-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 mb-2">Contraseña</label>
+                    <input type="password" id="password" class="w-full px-3 py-2 border rounded">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded transition-all">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileSearch = document.getElementById('mobileSearch');
+
+            mobileMenuButton.addEventListener('click', function () {
+                mobileSearch.classList.toggle('hidden');
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Explore button scroll to provinces
+            const exploreButton = document.getElementById('exploreButton');
+            exploreButton.addEventListener('click', function () {
+                document.getElementById('provinces').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            // Modal functionality
+            const modal = document.getElementById('modal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            // View more buttons for provinces
+            document.querySelectorAll('.view-more-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const province = this.getAttribute('data-province');
+                    modalTitle.textContent = `Información sobre ${province}`;
+
+                    // Custom content for each province
+                    let content = '';
+                    if (province === 'Mendoza') {
+                        content = `
+                            <img src="https://estudia-en-argentina.com.ar/wp-content/uploads/2024/12/%C2%BFQue-Hacer-en-San-Rafael-Mendoza-en-3-Dias-Itinerario-Perfecto-para-tu-Escapada.webp">
+                            <p class="mb-4">Mendoza es una provincia argentina ubicada en la región de Cuyo. Es famosa por sus viñedos y la producción de vino Malbec.</p>
+                            <h4 class="font-bold mb-2">Principales ciudades:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Mendoza (capital)</li>
+                                <li>San Rafael</li>
+                                <li>Godoy Cruz</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Atracciones principales:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Cerro Aconcagua</li>
+                                <li>Ruta del Vino</li>
+                                <li>Termas de Cacheuta</li>
+                            </ul>
+                        `;
+                    } else if (province === 'Buenos Aires') {
+                        content = `
+                            <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iatitravelinsurance.com%2Fpe%2Fblog%2Fbuenos-aires-gratis%2F&psig=AOvVaw0wQKEviJG1IAASl5-8vsub&ust=1746836148077000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCIiqwvKNlY0DFQAAAAAdAAAAABAE">
+                            <p class="mb-4">Buenos Aires es la capital y ciudad más grande de Argentina. Es conocida por su arquitectura europea, vida cultural y el tango.</p>
+                            <h4 class="font-bold mb-2">Principales ciudades:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Ciudad Autónoma de Buenos Aires</li>
+                                <li>La Plata</li>
+                                <li>Mar del Plata</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Atracciones principales:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Obelisco</li>
+                                <li>Teatro Colón</li>
+                                <li>Caminito en La Boca</li>
+                            </ul>
+                        `;
+                    } else if (province === 'Salta') {
+                        content = `
+                            <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.lanacion.com.ar%2Fpropiedades%2Fconstruccion-y-diseno%2Fla-ciudad-argentina-que-fue-elegida-como-una-de-las-mas-hermosas-del-mundo-por-su-arquitectura-nid11092023%2F&psig=AOvVaw1muteVC18e-BAzme_IkycM&ust=1746836177342000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCLD8lICOlY0DFQAAAAAdAAAAABAE">
+                            <p class="mb-4">Salta es una provincia del noroeste argentino conocida por sus paisajes montañosos, arquitectura colonial y tradiciones folclóricas.</p>
+                            <h4 class="font-bold mb-2">Principales ciudades:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Salta (capital)</li>
+                                <li>Cafayate</li>
+                                <li>San Salvador de Jujuy</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Atracciones principales:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Tren a las Nubes</li>
+                                <li>Quebrada de Humahuaca</li>
+                                <li>Valles Calchaquíes</li>
+                            </ul>
+                        `;
+                    }
+
+                    modalContent.innerHTML = content;
+                    modal.style.display = 'flex';
+                });
+            });
+
+            // View city buttons
+            document.querySelectorAll('.view-city-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const city = this.getAttribute('data-city');
+                    modalTitle.textContent = `Información sobre ${city}`;
+
+                    // Custom content for each city
+                    let content = '';
+                    if (city === 'Mendoza') {
+                        content = `
+                            <img src="https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="${city}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">Mendoza es la capital de la provincia del mismo nombre y es conocida como la tierra del sol y del buen vino.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Árido con veranos calurosos e inviernos fríos</li>
+                                <li>Altitud: 746 metros sobre el nivel del mar</li>
+                                <li>Población: Aprox. 1.2 millones de habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Recorrer bodegas y degustar vinos</li>
+                                <li>Visitar el Parque General San Martín</li>
+                                <li>Excursiones al Aconcagua</li>
+                            </ul>
+                        `;
+                    } else if (city === 'Buenos Aires') {
+                        content = `
+                            <img src="https://media.iatitravelinsurance.com/wp-content/uploads/sites/7/2024/11/30001424/cosas-gratis-que-hacer-en-argentina.jpg" alt="${city}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">Buenos Aires es la capital federal de Argentina, una metrópolis cosmopolita y centro cultural de América del Sur.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Templado húmedo</li>
+                                <li>Superficie: 203 km²</li>
+                                <li>Población: Aprox. 3 millones de habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Ver un espectáculo de tango en San Telmo</li>
+                                <li>Recorrer los barrios de Palermo y Recoleta</li>
+                                <li>Visitar el Teatro Colón y el Obelisco</li>
+                            </ul>
+                        `;
+                    } else if (city === 'Bariloche') {
+                        content = `
+                            <img src="https://turismo.encolombia.com/wp-content/uploads/2012/11/Bariloche-Argentina.webp">
+                            <p class="mb-4">San Carlos de Bariloche es una ciudad en la región de la Patagonia argentina, famosa por su arquitectura alpina y el chocolate.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Frío con nevadas invernales</li>
+                                <li>Altitud: 893 metros sobre el nivel del mar</li>
+                                <li>Población: Aprox. 130,000 habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Esquiar en el Cerro Catedral</li>
+                                <li>Recorrer el Circuito Chico</li>
+                                <li>Probar chocolates artesanales</li>
+                            </ul>
+                        `;
+                    } else if (city === 'Mar del Plata') {
+                        content = `
+                            <img src="https://resizer.glanacion.com/resizer/v2/por-que-le-dicen-la-feliz-a-mar-del-plata-la-YKBP2S6OSRBM3PQHWV6JFDAZ7I.png?auth=bf60b3b2187febd14ec1d5361c7f2c02515184dfafad97be7b112ce64390eaf1&width=768&quality=70&smart=false" alt="${city}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">Mar del Plata es el principal balneario atlántico de Argentina, conocido como "La Feliz" por su ambiente alegre y playas.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Templado oceánico</li>
+                                <li>Superficie: 79 km²</li>
+                                <li>Población: Aprox. 650,000 habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Disfrutar de las playas</li>
+                                <li>Visitar el Puerto y probar mariscos</li>
+                                <li>Recorrer la zona de los acantilados</li>
+                            </ul>
+                        `;
+                    } else if (city === 'Salta') {
+                        content = `
+                            <img src="https://resizer.glanacion.com/resizer/v2/en-la-ciudad-de-salta-conviven-construcciones-7K23G3UHN5GDXFKAD2VRYARITQ.JPG?auth=2b8ffb95067139eab64c112d0ea3779be40cac279f530d6271ffcdfde2dcf94d&width=1280&height=854&quality=70&smart=true" alt="${city}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">Salta, conocida como "La Linda", es una ciudad colonial con arquitectura bien preservada y rica tradición folclórica.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Templado con veranos lluviosos</li>
+                                <li>Altitud: 1,187 metros sobre el nivel del mar</li>
+                                <li>Población: Aprox. 620,000 habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Visitar la Catedral y el Cabildo</li>
+                                <li>Tomar el Tren a las Nubes</li>
+                                <li>Probar las famosas empanadas salteñas</li>
+                            </ul>
+                        `;
+                    } else if (city === 'Cafayate') {
+                        content = `
+                            <img src="https://media.istockphoto.com/id/514934666/es/foto/quebrada-de-cafayate-canyon-argentina.jpg?s=612x612&w=0&k=20&c=PCVQCpJUi00MnmDYjB97mfxFXZLWH7Oq5Rc5VO1VK24=" alt="${city}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">Cafayate es una pequeña ciudad en los Valles Calchaquíes, famosa por sus viñedos de altura y paisajes coloridos.</p>
+                            <h4 class="font-bold mb-2">Características:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Clima: Seco y soleado todo el año</li>
+                                <li>Altitud: 1,683 metros sobre el nivel del mar</li>
+                                <li>Población: Aprox. 14,000 habitantes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Qué hacer:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Degustar vino Torrontés</li>
+                                <li>Recorrer la Quebrada de las Conchas</li>
+                                <li>Visitar bodegas artesanales</li>
+                            </ul>
+                        `;
+                    }
+
+                    modalContent.innerHTML = content;
+                    modal.style.display = 'flex';
+                });
+            });
+
+            // View attraction buttons
+            document.querySelectorAll('.view-attraction-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const attraction = this.getAttribute('data-attraction');
+                    modalTitle.textContent = attraction;
+
+                    // Custom content for each attraction
+                    let content = '';
+                    if (attraction === 'Obelisco') {
+                        content = `
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/ObeliscoBA2015.2.jpg" alt="${attraction}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">El Obelisco de Buenos Aires es un ícono histórico de la ciudad, ubicado en la Plaza de la República.</p>
+                            <h4 class="font-bold mb-2">Datos importantes:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Altura: 67.5 metros</li>
+                                <li>Construido: 1936</li>
+                                <li>Arquitecto: Alberto Prebisch</li>
+                                <li>Ubicación: Av. 9 de Julio y Av. Corrientes</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Horarios:</h4>
+                            <p>Acceso exterior siempre disponible. No se permite el ingreso al interior.</p>
+                        `;
+                    } else if (attraction === 'Aconcagua') {
+                        content = `
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Aconcagua2016.jpg" alt="${attraction}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">El Cerro Aconcagua es la montaña más alta de América y el punto más alto fuera de Asia.</p>
+                            <h4 class="font-bold mb-2">Datos importantes:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Altura: 6,960.8 metros</li>
+                                <li>Ubicación: Cordillera de los Andes, Mendoza</li>
+                                <li>Primera ascensión: 1897 por Matthias Zurbriggen</li>
+                                <li>Temporada de ascenso: Noviembre a Marzo</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Actividades:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Expediciones de alta montaña</li>
+                                <li>Trekking hasta Plaza de Mulas (4,300 m)</li>
+                                <li>Avistamiento desde el Parque Provincial Aconcagua</li>
+                            </ul>
+                        `;
+                    } else if (attraction === 'Tren a las Nubes') {
+                        content = `
+                            <img src="https://blog.moebiusviajes.com/wp-content/uploads/2021/06/Tren-a-las-nubes.jpg" alt="${attraction}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">El Tren a las Nubes es un famoso recorrido turístico que asciende la Cordillera de los Andes hasta 4,200 metros de altura.</p>
+                            <h4 class="font-bold mb-2">Datos importantes:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Longitud del recorrido: 434 km (ida y vuelta)</li>
+                                <li>Duración: 15 horas aproximadamente</li>
+                                <li>Punto más alto: Viaducto La Polvorilla (4,200 m)</li>
+                                <li>Temporada: Abril a Noviembre</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Información útil:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Salida desde la ciudad de Salta</li>
+                                <li>Recomendable aclimatación previa</li>
+                                <li>Incluye servicio de comedor a bordo</li>
+                            </ul>
+                        `;
+                    } else if (attraction === 'Glaciar Perito Moreno') {
+                        content = `
+                            <img src="https://www.viajesyfotografia.com/wp-content/uploads/2024/02/perito-moreno-DSC09025.1024_result.webp" alt="${attraction}" class="w-full h-48 object-cover mb-4 rounded">
+                            <p class="mb-4">El Glaciar Perito Moreno es una de las reservas de agua dulce más importantes del mundo y uno de los pocos glaciares que sigue avanzando.</p>
+                            <h4 class="font-bold mb-2">Datos importantes:</h4>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>Superficie: 250 km²</li>
+                                <li>Altura del frente: 60 metros sobre el agua</li>
+                                <li>Ubicación: Parque Nacional Los Glaciares, Santa Cruz</li>
+                                <li>Distancia desde El Calafate: 80 km</li>
+                            </ul>
+                            <h4 class="font-bold mb-2">Actividades:</h4>
+                            <ul class="list-disc pl-5">
+                                <li>Pasarelas con vista al glaciar</li>
+                                <li>Navegación frente al glaciar</li>
+                                <li>Trekking sobre el hielo (con guías)</li>
+                                <li>Avistamiento de desprendimientos</li>
+                            </ul>
+                        `;
+                    }
+
+                    modalContent.innerHTML = content;
+                    modal.style.display = 'flex';
+                });
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Search functionality
+            const searchButton = document.getElementById('searchButton');
+            const mobileSearchButton = document.getElementById('mobileSearchButton');
+
+            function performSearch() {
+                alert('Funcionalidad de búsqueda en desarrollo. Pronto podrás buscar destinos turísticos.');
+            }
+
+            searchButton.addEventListener('click', performSearch);
+            mobileSearchButton.addEventListener('click', performSearch);
+
+            // Login modal
+            const loginButton = document.getElementById('loginButton');
+            const loginModal = document.getElementById('loginModal');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+            const loginForm = document.getElementById('loginForm');
+
+            loginButton.addEventListener('click', function () {
+                loginModal.style.display = 'flex';
+            });
+
+            closeLoginModal.addEventListener('click', function () {
+                loginModal.style.display = 'none';
+            });
+
+            // Close login modal when clicking outside
+            window.addEventListener('click', function (e) {
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+
+            // Login form submission
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Simple validation
+                if (username && password) {
+                    alert(`Bienvenido ${username}! Inicio de sesión exitoso.`);
+                    loginModal.style.display = 'none';
+                    loginButton.innerHTML = `<i class="fas fa-user mr-2"></i>${username}`;
+                } else {
+                    alert('Por favor completa todos los campos.');
+                }
+            });
+
+            // Newsletter subscription
+            const subscribeButton = document.getElementById('subscribeButton');
+            const newsletterEmail = document.getElementById('newsletterEmail');
+
+            subscribeButton.addEventListener('click', function () {
+                const email = newsletterEmail.value;
+
+                if (email && email.includes('@')) {
+                    alert(`Gracias por suscribirte con el email: ${email}. Pronto recibirás nuestras ofertas.`);
+                    newsletterEmail.value = '';
+                } else {
+                    alert('Por favor ingresa un email válido.');
+                }
+            });
+
+            // Instagram link
+            document.querySelector('a[href="https://instagram.com/caana_turist"]').addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Redirigiendo a Instagram: @caana_turist');
+                // En un entorno real, esto abriría el enlace:
+                // window.open('https://instagram.com/caana_turist', '_blank');
+            });
+        });
+    </script>
 </body>
+
 </html>
